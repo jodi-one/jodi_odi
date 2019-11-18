@@ -1,7 +1,7 @@
 import static groovy.io.FileType.*
 import java.nio.file.*
 
-def odiSrcDir = new File('D:/git/12.2.1.3.0')
+def odiSrcDir = new File('/u01/app/odi')
 def libFolder = 'src/main/resources/lib'
 def trgtDir = new File(libFolder)
 def odiJarNames = [
@@ -113,7 +113,13 @@ def odiJarNames = [
         'enterprise_data_quality.jar',
         'oracle.odi-sdk-jse.jar',
         'ojdbc8.jar',
-        'ojdbc8dms.jar'
+        'ojdbc8dms.jar',
+        'commons-collections-3.2.2.jar',
+        'oraclepki.jar',
+        'oamcfgtool.jar',
+        'oci-java-sdk-full-shaded-1.2.33.jar',
+        'oracle.odi.tp.clientLib.jar',
+        'oraclepki.jar'
 ]
 
 def copyFiles = {

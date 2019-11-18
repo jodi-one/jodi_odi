@@ -8,7 +8,7 @@ repositories {
     mavenLocal()
 }
 
-def odiversion = '12.2.1.3.2.4'
+def odiversion = '12.2.1.3.2.5'
 group 'one.jodi'
 version "$odiversion"
 
