@@ -123,10 +123,11 @@ def odiJarNames = [
 ]
 
 def copyFiles = {
+    if( ((File) it).getAbsolutePath().contains(".patch_storage")){return}
     if(!odiJarNames.contains(it.name) ){
         return
     }
-    println "Copying: '$it.name' to $trgtDir"
+    println "Copying: '$it.absolutePath' to $trgtDir"
     Path copied = Paths.get("$trgtDir/$it.name");
     Path originalPath = Paths.get(it.absolutePath);
     Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);
