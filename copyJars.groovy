@@ -1,7 +1,8 @@
 import static groovy.io.FileType.*
 import java.nio.file.*
 
-def odiSrcDir = new File('/u01/app/odi')
+// def odiSrcDir = new File('/u01/app/odi')
+def odiSrcDir = new File('D:/products/12.2.1.3.0/odihome_1')
 def libFolder = 'src/main/resources/lib'
 def trgtDir = new File(libFolder)
 def odiJarNames = [
@@ -63,7 +64,7 @@ def odiJarNames = [
         'org.codehaus.jackson.jackson-core-asl.jar',
         'org.glassfish.javax.json.jar',
         'javax.management.j2ee.jar',
-        'oracle.ucp.jar',
+     //   'oracle.ucp.jar', // this should come from patch 26261906 otherwise we get connection closed.
         'javax.persistence.jar',
         'dms.jar',
         'ojdl.jar',
@@ -137,3 +138,9 @@ f.delete()
 f.mkdirs()
 
 odiSrcDir.traverse type: FILES, visit: copyFiles
+
+// from patch 26261906
+// this is to avoid connection closed when commiting to git with odi-sdk.
+Path src = new File("patch/oracle.ucp.jar").toPath()
+Path dst = Paths.get(libFolder, "oracle.ucp.jar")
+Files.copy(src, dst, StandardCopyOption.REPLACE_EXISTING);
