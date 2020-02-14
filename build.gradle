@@ -13,6 +13,7 @@ group 'one.jodi'
 version "$odiversion"
 
 shadowJar {
+    zip64 = true
     baseName = 'jodi_odi'
     classifier = ''
     version = "$odiversion"
