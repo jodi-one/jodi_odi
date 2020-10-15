@@ -10,4 +10,6 @@ DO NOT PUBLISH TO MAVENCENTRAL; Oracle Libraries are not permitted there from no
 <li>gradle shadowJar</li>
 <li>mvn install:install-file -Dfile=build/libs/jodi_odi-12.2.1.3.2.jar -DgroupId=one.jodi -DartifactId=jodi_odi -Dversion=12.2.1.3.2 -Dpackaging=jar</li>
 <li> In your project use: this as gradle dependency:	provided group: 'one.jodi', name: 'jodi_odi', version: '12.2.1.3.2'</li>
+<li><a href="https://mkyong.com/maven/how-to-add-oracle-jdbc-driver-in-your-maven-local-repository">Add OJDBC to your local mvn repo</a>/</li>
+<li>mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle -DartifactId=ojdbc8 -Dversion=19.3 -Dpackaging=jar</li>
 </ul>
