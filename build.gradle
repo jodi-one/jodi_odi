@@ -1,20 +1,12 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
     id 'java'
     id 'groovy'
 }
 
-repositories {
-    mavenLocal()
-}
-
-def odiversion = '12.2.1.3.2.6'
-group 'one.jodi'
-version "$odiversion"
-
 shadowJar {
-    zip64 = true
     baseName = 'jodi_odi'
     classifier = ''
-    version = "$odiversion"
+    version = '12.2.1.3.2.6'
+    zip64 true
 }
