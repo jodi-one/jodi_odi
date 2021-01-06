@@ -1,4 +1,30 @@
+#!/bin/bash
 gradle clean
+status=$?
+if [ $status -gt 0 ]
+then
+  echo "clean failed";
+  exit 1;
+fi
 groovy copyJars.groovy
+status=$?
+if [ $status  -gt 0 ]
+then
+  echo "copyJars failed";
+  exit 1;
+fi
 gradle shadowJar
-mvn install:install-file "-Dfile=build/libs/jodi_odi-12.2.1.3.2.6.jar" "-DgroupId=one.jodi" "-DartifactId=jodi_odi" "-Dversion=12.2.1.3.2.6" "-Dpackaging=jar"
+status=$?
+if [ $status -gt 0 ]
+ then
+  echo "shadowJar failed";
+  exit 1;
+fi
+mvn install:install-file -Dfile=./build/libs/jodi_odi-12.2.1.3.2.6.jar -DgroupId=one.jodi -DartifactId=jodi_odi -Dversion=12.2.1.3.2.6 -Dpackaging=jar
+status=$?
+if [ $status -gt 0 ]
+then
+  echo "mvn install failed";
+  exit 1;
+fi
+gradle clean
