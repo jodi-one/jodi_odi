@@ -1,8 +1,13 @@
-import static groovy.io.FileType.*
-import java.nio.file.*
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
+import static groovy.io.FileType.FILES
 
 // def odiSrcDir = new File('/u01/app/odi')
-def odiSrcDir = new File('/u01/app/oracle/product/12.2.1.4.0/odihome_1/')
+//def odiSrcDir = new File('/u01/app/oracle/product/12.2.1.4.0/odihome_1/')
+def odiSrcDir = new File('C:/Oracle/Oracle_Home/')
 def libFolder = 'src/main/resources/lib'
 def trgtDir = new File(libFolder)
 def odiJarNames = [
@@ -64,7 +69,7 @@ def odiJarNames = [
         'org.codehaus.jackson.jackson-core-asl.jar',
         'org.glassfish.javax.json.jar',
         'javax.management.j2ee.jar',
-     //   'oracle.ucp.jar', // this should come from patch 26261906 otherwise we get connection closed.
+        //   'oracle.ucp.jar', // this should come from patch 26261906 otherwise we get connection closed.
         'javax.persistence.jar',
         'dms.jar',
         'ojdl.jar',
@@ -113,8 +118,8 @@ def odiJarNames = [
         'jsch-0.1.53.jar',
         'enterprise_data_quality.jar',
         'oracle.odi-sdk-jse.jar',
-        'ojdbc8.jar',
-        'ojdbc8dms.jar',
+//        'ojdbc8.jar', // The Oracle JDBC implementation is now available in Maven central, point the application dependencies to it
+//        'ojdbc8dms.jar',
         'commons-collections-3.2.2.jar',
         'oraclepki.jar',
         'oamcfgtool.jar',
@@ -124,16 +129,18 @@ def odiJarNames = [
 ]
 
 def copyFiles = {
-    if( ((File) it).getAbsolutePath().contains(".patch_storage")){return}
-    if(!odiJarNames.contains(it.name) ){
+    if (((File) it).getAbsolutePath().contains(".patch_storage")) {
+        return
+    }
+    if (!odiJarNames.contains(it.name)) {
         return
     }
     println "Copying: '$it.absolutePath' to $trgtDir"
-    Path copied = Paths.get("$trgtDir/$it.name");
-    Path originalPath = Paths.get(it.absolutePath);
-    Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);
+    Path copied = Paths.get("$trgtDir/$it.name")
+    Path originalPath = Paths.get(it.absolutePath)
+    Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING)
 }
-File  f = new File(libFolder)
+File f = new File(libFolder)
 f.delete()
 f.mkdirs()
 
