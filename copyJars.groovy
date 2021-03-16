@@ -3,13 +3,9 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
-import static groovy.io.FileType.FILES
-
 // def odiSrcDir = new File('/u01/app/odi')
-//def odiSrcDir = new File('/u01/app/oracle/product/12.2.1.4.0/odihome_1/')
-def odiSrcDir = new File('C:/Oracle/Oracle_Home/')
+def odiSrcDir = 'C:/Oracle/Oracle_Home/'
 def libFolder = 'src/main/resources/lib'
-def trgtDir = new File(libFolder)
 def odiJarNames = [
         'eclipselink.jar',
         'activation.jar',
@@ -128,20 +124,30 @@ def odiJarNames = [
         'oraclepki.jar'
 ]
 
-def copyFiles = {
-    if (((File) it).getAbsolutePath().contains(".patch_storage")) {
-        return
-    }
-    if (!odiJarNames.contains(it.name)) {
-        return
-    }
-    println "Copying: '$it.absolutePath' to $trgtDir"
-    Path copied = Paths.get("$trgtDir/$it.name")
-    Path originalPath = Paths.get(it.absolutePath)
-    Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING)
+static def checkPath(Path path) {
+    if (!Files.exists(path as Path))
+        throw new IllegalArgumentException("Src path $path not found")
+    if (!Files.isDirectory(path))
+        throw new IllegalArgumentException("Src path $path is not a directory")
 }
-File f = new File(libFolder)
-f.delete()
-f.mkdirs()
 
-odiSrcDir.traverse type: FILES, visit: copyFiles
+def srcPath = Paths.get(odiSrcDir)
+def trgtDir = Paths.get(libFolder)
+
+checkPath(srcPath as Path)
+checkPath(trgtDir as Path)
+
+// clear target dir first
+if (Files.exists(trgtDir)) {
+    Files.find(trgtDir, 10, (_, a) -> a.isRegularFile())
+            .forEach(Files::delete)
+}
+
+Files.createDirectories(trgtDir)
+
+// find matching files and copy them to the output directory
+Files.find(srcPath, 999, (_, a) -> a.isRegularFile())
+        .filter(p -> !p.toString().contains(".patch_storage"))
+        .filter(p -> odiJarNames.contains(p.getFileName().toString()))
+        .peek(p -> println "Found: $p")
+        .forEach(p -> Files.copy(p, trgtDir.resolve(p.fileName), StandardCopyOption.REPLACE_EXISTING))
