@@ -1,5 +1,5 @@
 #!/bin/bash
-version="12.2.1.4.1.0"
+version="12.2.1.4.0.0"
 gradle clean
 status=$?
 if [ $status -gt 0 ]
