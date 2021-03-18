@@ -58,6 +58,7 @@ def odiJarNames = [
         'jackson-core-2.9.9.jar',
         'jackson-core-asl-1.9.11.jar',
         'jackson-core-asl-1.9.13.jar',
+        'jackson-databind-2.9.9.jar',
         'jakarta-oro-2.0.8.jar',
         'javax.management.j2ee.jar',
         'javax.persistence.jar',
@@ -84,6 +85,7 @@ def odiJarNames = [
         'oracle.odi-sdk-jse.jar',
         'oracle.odi.tp.clientLib.jar',
         'oraclepki.jar',
+        'oracle.ucp.jar',
         'orai18n-mapping.jar',
         'org.codehaus.jackson.jackson-core-asl.jar',
         'org.eclipse.jgit-5.2.0.201812061821-r.jar',
@@ -108,8 +110,10 @@ def odiJarNames = [
         'spring-web-5.1.3.RELEASE.jar',
         'spring-webmvc-5.1.3.RELEASE.jar',
         'svnkit-1.10.0.jar',
+        'thirdPartyMain_comFasterxmlJacksonCoreJacksonDatabind_2.9.9.0.0.jar',
         'trilead-ssh2-1.0.0-build221.jar',
         'trove.jar',
+        'wagon-http-2.8-shaded.jar',
         'wlthint3client.jar',
         'XmlSchema-1.4.7.jar'
         //   'oracle.ucp.jar', // this should come from patch 26261906 otherwise we get connection closed.
