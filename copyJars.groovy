@@ -85,7 +85,6 @@ def odiJarNames = [
         'oracle.odi-sdk-jse.jar',
         'oracle.odi.tp.clientLib.jar',
         'oraclepki.jar',
-        'oracle.ucp.jar',
         'orai18n-mapping.jar',
         'org.codehaus.jackson.jackson-core-asl.jar',
         'org.eclipse.jgit-5.2.0.201812061821-r.jar',
@@ -116,9 +115,6 @@ def odiJarNames = [
         'wagon-http-2.8-shaded.jar',
         'wlthint3client.jar',
         'XmlSchema-1.4.7.jar'
-        //   'oracle.ucp.jar', // this should come from patch 26261906 otherwise we get connection closed.
-        //   'ojdbc8.jar', // The Oracle JDBC implementation is now available in Maven central, point the application dependencies to it
-        //   'ojdbc8dms.jar',
 ]
 
 def srcPath = Paths.get(odiSrcDir)
