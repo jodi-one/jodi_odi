@@ -121,25 +121,20 @@ def odiJarNames = [
         //   'ojdbc8dms.jar',
 ]
 
-static def checkPath(Path path) {
-    if (!Files.exists(path as Path))
-        throw new IllegalArgumentException("Path $path not found")
-    if (!Files.isDirectory(path))
-        throw new IllegalArgumentException("Path $path is not a directory")
-}
-
 def srcPath = Paths.get(odiSrcDir)
 def trgtDir = Paths.get(libFolder)
 
-checkPath(srcPath as Path)
+if (!Files.exists(srcPath as Path))
+    throw new IllegalArgumentException("Path $srcPath not found")
+if (!Files.isDirectory(srcPath))
+    throw new IllegalArgumentException("Path $srcPath is not a directory")
 if (!Files.isReadable(srcPath))
     throw new IllegalArgumentException("Not allowed to read from path $srcPath")
-checkPath(trgtDir as Path)
-if (!Files.isWritable(trgtDir))
-    throw new IllegalArgumentException("Not allowed to write to path $trgtDir")
 
 // clear target dir first
 if (Files.exists(trgtDir)) {
+    if (!Files.isWritable(trgtDir))
+        throw new IllegalArgumentException("Not allowed to write to path $trgtDir")
     Files.find(trgtDir, 10, (_, a) -> a.isRegularFile())
             .forEach(Files::delete)
 }
