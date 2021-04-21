@@ -1,4 +1,4 @@
-@SET odiVersion=12.2.1.4.0.0
+@SET odiVersion=12.2.1.4.0.1
 gradle clean
 groovy copyJars.groovy
 gradle shadowJar

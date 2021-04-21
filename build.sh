@@ -1,31 +1,27 @@
 #!/bin/bash
-version="12.2.1.4.0.0"
+function die() {
+  echo "$1"
+  exit 1
+}
+
+# read version from gradle properties
+source "gradle.properties"
+
+# shellcheck disable=SC2154
+echo "Building version ${version}"
+
 gradle clean
 status=$?
-if [ $status -gt 0 ]
-then
-  echo "clean failed";
-  exit 1;
-fi
+[ ${status} -eq 0 ] || die "clean failed"
+
 groovy copyJars.groovy
 status=$?
-if [ $status  -gt 0 ]
-then
-  echo "copyJars failed";
-  exit 1;
-fi
+[ ${status} -eq 0 ] || die "copyJars failed"
+
 gradle shadowJar
 status=$?
-if [ $status -gt 0 ]
- then
-  echo "shadowJar failed";
-  exit 1;
-fi
-mvn install:install-file -Dfile=./build/libs/jodi_odi-$version.jar -DgroupId=one.jodi -DartifactId=jodi_odi -Dversion=$version -Dpackaging=jar
+[ ${status} -eq 0 ] || die "shadowJar failed"
+
+mvn install:install-file -Dfile=./build/libs/jodi_odi-"${version}".jar -DgroupId=one.jodi -DartifactId=jodi_odi -Dversion="${version}" -Dpackaging=jar
 status=$?
-if [ $status -gt 0 ]
-then
-  echo "mvn install failed";
-  exit 1;
-fi
-gradle clean
+[ ${status} -eq 0 ] || die "mvn install failed"
