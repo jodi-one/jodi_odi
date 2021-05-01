@@ -4,7 +4,8 @@ import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
 // def odiSrcDir = '/u01/app/odi'
-def odiSrcDir = 'C:/Oracle/Oracle_Home/'
+//def odiSrcDir = 'C:/Oracle/Oracle_Home/'
+def odiSrcDir = '/u01/oracle/mwh'
 def libFolder = 'src/main/resources/lib'
 def odiJarNames = [
         'activation.jar',

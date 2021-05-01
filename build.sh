@@ -5,7 +5,7 @@ function die() {
 }
 
 # read version from gradle properties
-source "gradle.properties"
+source "./gradle.properties"
 
 # shellcheck disable=SC2154
 echo "Building version ${version}"
