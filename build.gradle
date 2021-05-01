@@ -5,8 +5,7 @@ plugins {
 }
 
 shadowJar {
-    baseName = 'jodi_odi'
-    classifier = ''
-    version = '12.2.1.4.0.0'
+    archiveBaseName.set('jodi_odi')
+    archiveClassifier.set('')
     zip64 true
 }

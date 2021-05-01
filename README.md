@@ -6,7 +6,7 @@ ODI SDK dependencies to build fat jar to develop with ODISDK, no actual jars fro
 
 ### Usage
 * modify _copyJars.groovy_ to point variable _odiSrcDir_ to your local ODI installation, e.g. \
-  `def odiSrcDir = new File('/u01/app/odi')`
+  `def odiSrcDir = '/u01/app/odi'`
 * collect the content jars: run `groovy copyJars.groovy`
 * build the fat jar: `gradle shadowJar`
 * add the new fat jar to your local Maven repository: \
