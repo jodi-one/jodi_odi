@@ -11,7 +11,6 @@ ODI SDK dependencies to build fat jar to develop with ODISDK, no actual jars fro
 * build the fat jar: `gradle shadowJar`
 * add the new fat jar to your local Maven repository:
   
-    
-    mvn install:install-file -Dfile=build/libs/jodi_odi-12.2.1.4.0.0.jar -DgroupId=one.jodi -DartifactId=jodi_odi -Dversion=12.2.1.4.0.0 -Dpackaging=jar
+      mvn install:install-file -Dfile=build/libs/jodi_odi-12.2.1.4.0.0.jar -DgroupId=one.jodi -DartifactId=jodi_odi -Dversion=12.2.1.4.0.0 -Dpackaging=jar
 
 To do it all in one go, use script [build.sh](build.sh)
