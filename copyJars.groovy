@@ -115,7 +115,13 @@ def odiJarNames = [
         'trove.jar',
         'wagon-http-2.8-shaded.jar',
         'wlthint3client.jar',
-        'XmlSchema-1.4.7.jar'
+        'XmlSchema-1.4.7.jar',
+        'mysql-connector-java-commercial-8.0.14.jar',
+        'oraclepki.jar',
+        'osdt_core.jar',
+        'osdt_cert.jar' ,
+        'ojdbc8.jar',
+        'oracle.ucp.jar'
 ]
 
 def properties = new Properties()
