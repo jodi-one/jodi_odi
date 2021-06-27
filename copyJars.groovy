@@ -2,11 +2,11 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
+import java.util.stream.Collectors
 
-// def odiSrcDir = '/u01/app/odi'
-//def odiSrcDir = 'C:/Oracle/Oracle_Home/'
-def odiSrcDir = '/u01/oracle/mwh'
-def libFolder = 'src/main/resources/lib'
+// List of all jars to copy. Might be given as relative paths (starting from the directory set in odiSrcDir and always
+// using / as path separator). For instance, a value of 'oracle_common/modules/oracle.pki/oraclepki.jar' would resolve to
+// '/u01/oracle/mwh/oracle_common/modules/oracle.pki/oraclepki.jar'
 def odiJarNames = [
         'activation.jar',
         'ant-antlr.jar',
@@ -85,7 +85,7 @@ def odiJarNames = [
         'oracle.odi-jaxrsri.jar',
         'oracle.odi-sdk-jse.jar',
         'oracle.odi.tp.clientLib.jar',
-        'oraclepki.jar',
+        'oracle_common/modules/oracle.pki/oraclepki.jar',
         'orai18n-mapping.jar',
         'org.codehaus.jackson.jackson-core-asl.jar',
         'org.eclipse.jgit-5.2.0.201812061821-r.jar',
@@ -124,8 +124,14 @@ def odiJarNames = [
         'oracle.ucp.jar'
 ]
 
-def srcPath = Paths.get(odiSrcDir)
-def trgtDir = Paths.get(libFolder)
+def properties = new Properties()
+File propertiesFile = new File('gradle.properties')
+propertiesFile.withInputStream {
+    properties.load(it)
+}
+
+def srcPath = Paths.get(properties.odiSrcDir)
+def trgtDir = Paths.get(properties.libFolder)
 
 if (!Files.exists(srcPath as Path))
     throw new IllegalArgumentException("Path $srcPath not found")
@@ -144,9 +150,26 @@ if (Files.exists(trgtDir)) {
 // (re)create the target path if necessary
 Files.createDirectories(trgtDir)
 
+// split jars with specific paths (true) from regular filenames (false) for later usage
+def pathMap = odiJarNames.stream()
+        .map(o -> o.toString())
+        .collect(Collectors.partitioningBy(p -> p.toString().contains("/")))
+
 // find matching files and copy them to the output directory
 Files.find(srcPath, 999, (_, a) -> a.isRegularFile())
         .filter(p -> !p.toString().contains(".patch_storage"))
-        .filter(p -> odiJarNames.contains(p.getFileName().toString()))
+        .filter(p -> pathMap.get(false).contains(p.fileName.toString()))
         .peek(p -> println "Found: $p")
         .forEach(p -> Files.copy(p, trgtDir.resolve(p.fileName), StandardCopyOption.REPLACE_EXISTING))
+
+// find files we specified specific paths for; we always do these last so that specific versions always overwrite any
+// non-specific versions that might be left accidentally
+pathMap.get(true).stream()
+    .map( p -> srcPath.resolve(p) )
+    .filter( p -> {
+        boolean exists = Files.exists(p)
+        if (!exists)  println "WARN file not found: $p"
+        return exists
+    })
+    .peek( p -> println "Processing: $p")
+    .forEach(p -> Files.copy(p, trgtDir.resolve(p.fileName), StandardCopyOption.REPLACE_EXISTING))
